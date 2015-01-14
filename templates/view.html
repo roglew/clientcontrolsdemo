@@ -1,0 +1,54 @@
+<html>
+<head>
+	<title>{{ name }}'s Stock Portfolio</title>
+	<script>
+validate_input = function () {
+	var money, stocks;
+	money = {{ dollars }};
+	stocks = {{ share_cnt }};
+	buy_count = parseInt(document.getElementById("buy_count").value);
+	sell_count = parseInt(document.getElementById("sell_count").value);
+
+	var submit=true;
+	if (buy_count) {
+		if (buy_count * 100 > money) {
+			alert("You don't have enough money");
+			submit=false;
+		}
+
+		if (buy_count < 0) {
+			alert("You must buy a positive number of stocks");
+			submit=false;
+		}
+	}
+
+	if (sell_count) {
+		if (sell_count > stocks) {
+			alert("You don't have enough stocks");
+			submit=false;
+		}
+
+		if (sell_count < 0) {
+			alert("You must sell a positive number of stocks");
+			submit=false;
+		}
+	}
+
+	if (submit)
+		document.getElementById("stock_form").submit();
+}
+	</script>
+</head>
+<body>
+	<h1>{{ name }}'s Stock Portfolio</h1>
+	<p>Money: ${{ dollars }}</p>
+	<p>Stocks: {{ share_cnt }}</p>
+	<p>Price: $100</p>
+	<form id="stock_form" action="/view/{{ name }}" method="POST">
+		<input type="hidden" name="action" value="transfer">
+		Buy shares: <input type="text" id="buy_count" name="buy_count"><br>
+		Sell shares: <input type="text" id="sell_count" name="sell_count"><br>
+		<input type="button" onclick="validate_input()" value="Submit">
+	</form>
+</body>
+</html>
